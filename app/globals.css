@@ -1,0 +1,569 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700;800&family=Comic+Neue:wght@700&family=VT323&display=swap');
+@import 'tailwindcss';
+
+@theme inline {
+  --font-sans: 'Quicksand', system-ui, sans-serif;
+}
+
+/* Quicksand is the default everywhere via Tailwind's --font-sans (above), so
+   font-mono on the countdown and the portfolio theme fonts (Comic Neue, VT323)
+   can still take over. A blanket `font-family !important` here would defeat them. */
+* {
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+body {
+  font-family: 'Quicksand', sans-serif;
+}
+
+/* --- GLOBAL INTERACTIVE THEMES --- */
+body.theme-dark {
+  background-color: #0f172a !important;
+  color: #f1f5f9 !important;
+}
+body.theme-dark .bg-white,
+body.theme-dark .bg-\[\#FDF8F4\] {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+body.theme-dark .text-slate-800,
+body.theme-dark .text-slate-700 {
+  color: #f8fafc !important;
+}
+body.theme-dark .text-slate-500,
+body.theme-dark .text-slate-400 {
+  color: #94a3b8 !important;
+}
+body.theme-dark .bg-slate-50,
+body.theme-dark .bg-slate-100 {
+  background-color: #0f172a !important;
+  border-color: #334155 !important;
+  color: #cbd5e1 !important;
+}
+body.theme-dark aside {
+  border-color: #334155 !important;
+}
+
+body.theme-ocean {
+  background-color: #e0f2fe !important;
+  color: #0c4a6e !important;
+}
+body.theme-ocean .bg-white,
+body.theme-ocean .bg-\[\#FDF8F4\] {
+  background-color: #f0f9ff !important;
+  border-color: #bae6fd !important;
+}
+body.theme-ocean .text-slate-800,
+body.theme-ocean .text-slate-700 {
+  color: #082f49 !important;
+}
+body.theme-ocean .text-slate-500,
+body.theme-ocean .text-slate-400 {
+  color: #0284c7 !important;
+}
+body.theme-ocean .bg-slate-50,
+body.theme-ocean .bg-slate-100 {
+  background-color: #e0f2fe !important;
+  border-color: #bae6fd !important;
+  color: #0c4a6e !important;
+}
+body.theme-ocean aside {
+  border-color: #bae6fd !important;
+}
+
+/* --- GLOBAL FONT SCALING --- */
+body.font-small {
+  font-size: 0.9em;
+}
+body.font-large {
+  font-size: 1.1em;
+}
+
+/* Tooltip Custom Visibility States */
+.calendar-node .tooltip-box {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  transform: translate(-50%, 10px);
+}
+
+.calendar-node:hover .tooltip-box {
+  visibility: visible;
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* Portfolio Dynamic Theme Styles */
+.theme-chalkboard {
+  background-color: #2b3e34 !important;
+  color: #f3f4f6 !important;
+  border-color: #4b6b58 !important;
+}
+.theme-chalkboard .card-base {
+  background-color: #223028 !important;
+  border: 2px dashed #4b6b58 !important;
+}
+.theme-chalkboard h2,
+.theme-chalkboard h3,
+.theme-chalkboard h4 {
+  color: #fcd34d !important;
+}
+
+.theme-bubblegum {
+  background-color: #fff0f6 !important;
+  color: #4a154b !important;
+  font-family: 'Comic Neue', cursive;
+}
+.theme-bubblegum .card-base {
+  background-color: #ffffff !important;
+  border: 3px solid #ff73b9 !important;
+  border-radius: 24px;
+  box-shadow: 4px 4px 0px #ff73b9;
+}
+.theme-bubblegum h2,
+.theme-bubblegum h3,
+.theme-bubblegum h4 {
+  color: #e01e5a !important;
+}
+
+.theme-arcade {
+  background-color: #0f172a !important;
+  color: #38bdf8 !important;
+  font-family: 'VT323', monospace;
+  font-size: 1.15rem;
+}
+.theme-arcade .card-base {
+  background-color: #1e293b !important;
+  border: 3px solid #38bdf8 !important;
+  box-shadow: 0 0 10px #38bdf8;
+}
+.theme-arcade h2,
+.theme-arcade h3,
+.theme-arcade h4 {
+  color: #f43f5e !important;
+  text-shadow: 0 0 4px #f43f5e;
+}
+
+.animate-travel {
+  transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===== Learning Journey Map (Duolingo-style mountain trail) ===== */
+
+/* Avatars climb smoothly from one bubble to the next */
+.journey-avatar {
+  transition: left 0.9s cubic-bezier(0.34, 1.56, 0.64, 1),
+    top 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Gentle hovering bob for avatars and the active bubble */
+@keyframes journey-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+.journey-bob {
+  animation: journey-bob 2.4s ease-in-out infinite;
+}
+
+/* Pulsing halo around the node the student can play right now */
+@keyframes journey-halo {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.7;
+  }
+  70% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+}
+.journey-halo {
+  animation: journey-halo 2s ease-out infinite;
+}
+
+/* Pop the bubble when it first becomes active */
+@keyframes journey-pop {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Drifting clouds across the sky */
+@keyframes journey-drift {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(60px);
+  }
+}
+.journey-cloud {
+  animation: journey-drift 9s ease-in-out infinite alternate;
+}
+
+/* Twinkling stars */
+@keyframes journey-twinkle {
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.journey-twinkle {
+  animation: journey-twinkle 3s ease-in-out infinite;
+}
+
+/* Waving summit flag */
+@keyframes journey-wave {
+  0%,
+  100% {
+    transform: scaleX(1) skewX(0deg);
+  }
+  50% {
+    transform: scaleX(0.92) skewX(-7deg);
+  }
+}
+.journey-flag {
+  transform-origin: left center;
+  animation: journey-wave 1.8s ease-in-out infinite;
+}
+
+/* Celebration toast */
+@keyframes journey-toast {
+  0% {
+    transform: translate(-50%, 12px) scale(0.8);
+    opacity: 0;
+  }
+  15% {
+    transform: translate(-50%, 0) scale(1);
+    opacity: 1;
+  }
+  80% {
+    transform: translate(-50%, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -10px) scale(0.95);
+    opacity: 0;
+  }
+}
+.journey-toast {
+  animation: journey-toast 2.2s ease-in-out forwards;
+}
+
+/* Parachute glide — plays once from a cleared peak to the next base camp */
+@keyframes journey-parachute {
+  0% {
+    transform: translate(-50%, -100%) translate(0, 0) rotate(-7deg);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  82% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -100%) translate(var(--pdx), var(--pdy)) rotate(7deg);
+    opacity: 0;
+  }
+}
+.journey-parachute {
+  font-size: 46px;
+  line-height: 1;
+  animation: journey-parachute 4s ease-in-out forwards;
+}
+
+/* Ocean: a boat sailing from one wave crest to the next */
+@keyframes ocean-sail {
+  0% {
+    transform: translate(-50%, -100%) translate(0, 0) rotate(-4deg);
+    opacity: 0;
+  }
+  14% {
+    opacity: 1;
+  }
+  84% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -100%) translate(var(--sdx), var(--sdy)) rotate(4deg);
+    opacity: 0;
+  }
+}
+.ocean-sail {
+  animation: ocean-sail 3.6s ease-in-out forwards;
+}
+
+/* Space: a pod flying along its curved transfer path to the next planet */
+@keyframes pod-fly {
+  0% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+.pod-fly {
+  offset-rotate: 0deg;
+  animation: pod-fly 3.2s ease-in-out forwards;
+}
+
+/* Gentle sea bob — a rock-and-rise for anything riding the waves */
+@keyframes ocean-bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-2.5deg);
+  }
+  50% {
+    transform: translateY(-7px) rotate(2.5deg);
+  }
+}
+.ocean-bob {
+  animation: ocean-bob 3s ease-in-out infinite;
+}
+
+/* Slow horizontal roll for the rolling wave bands */
+@keyframes ocean-roll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-60px);
+  }
+}
+.ocean-roll {
+  animation: ocean-roll 9s linear infinite;
+}
+
+/* Slow drift for floating islands (apply to an inner, untransformed group) */
+@keyframes world-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+.world-float {
+  animation: world-float 7s ease-in-out infinite;
+}
+
+/* Soft glow pulse for the moon */
+@keyframes journey-glow {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+.journey-glow {
+  animation: journey-glow 4s ease-in-out infinite;
+}
+
+@layer base {
+  body {
+    @apply bg-[#FDF8F4] text-slate-800 antialiased;
+  }
+
+  /* Headings settle on balanced lines (no lonely orphan words); body text wraps
+     for readability. A high-end editorial touch applied app-wide. */
+  h1, h2, h3, h4 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+}
+
+/* ===== High-end visual pass — Editorial Luxury archetype =====
+   Premium easing + a staggered entry reveal + ambient surfaces, applied as
+   opt-in utilities so they layer onto the existing warm/playful brand. */
+
+:root {
+  /* Linear/Apple-tier spring-out curve used across interactive motion */
+  --ease-premium: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* Clickable map nodes (the SVG island groups and the round trek bubbles) must
+   never flash the browser's default square focus outline on click/tap. They
+   keep a soft, rounded ring for keyboard navigation only. */
+.map-node:focus {
+  outline: none;
+}
+.map-node:focus-visible {
+  outline: 3px solid rgba(249, 115, 22, 0.75);
+  outline-offset: 4px;
+  border-radius: 9999px;
+}
+
+/* Soft, highly diffused ambient elevation — replaces harsh black drop shadows */
+.shadow-ambient {
+  box-shadow: 0 1px 2px rgba(76, 51, 25, 0.04), 0 12px 32px -8px rgba(76, 51, 25, 0.1);
+}
+
+/* Microscopic pill-shaped eyebrow tag that precedes a major heading */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
+/* Heavy fade-up entry — elements rise into place with a brief blur, never
+   appearing statically. Children opt in with .reveal and stagger via delay. */
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+.reveal {
+  animation: reveal-up 0.7s var(--ease-premium) both;
+}
+.reveal-1 { animation-delay: 0.06s; }
+.reveal-2 { animation-delay: 0.12s; }
+.reveal-3 { animation-delay: 0.18s; }
+.reveal-4 { animation-delay: 0.24s; }
+.reveal-5 { animation-delay: 0.3s; }
+
+/* Respect users who ask for less motion: drop entry animation + the journey
+   ambience, and neutralise the global colour transition. */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    animation: none;
+  }
+  .journey-bob,
+  .journey-halo,
+  .journey-cloud,
+  .journey-twinkle,
+  .journey-flag,
+  .world-float,
+  .ocean-bob,
+  .ocean-roll,
+  .journey-glow {
+    animation: none !important;
+  }
+  * {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Portfolio mystery-box confetti burst */
+@keyframes portfolio-confetti {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--cx), var(--cy)) rotate(var(--cr));
+    opacity: 0;
+  }
+}
+.portfolio-confetti {
+  position: absolute;
+  top: 58%;
+  width: 9px;
+  height: 14px;
+  border-radius: 2px;
+  opacity: 0;
+  animation: portfolio-confetti 1s ease-out forwards;
+}
+
+/* Let Font Awesome icons keep their glyph font (the global Quicksand !important
+   rule would otherwise break them) */
+[class^='fa-'],
+[class*=' fa-'] {
+  font-family: 'Font Awesome 6 Free' !important;
+}
+.fa-brands {
+  font-family: 'Font Awesome 6 Brands' !important;
+}
+
+/* ===== shadcn/ui design tokens (Mentor dashboard) ===== */
+:root {
+  --radius: 0.75rem;
+  --background: #fdf8f4;
+  --foreground: #1e293b;
+  --card: #ffffff;
+  --card-foreground: #1e293b;
+  --popover: #ffffff;
+  --popover-foreground: #1e293b;
+  --primary: #f97316;
+  --primary-foreground: #ffffff;
+  --secondary: #f1f5f9;
+  --secondary-foreground: #1e293b;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: #fff7ed;
+  --accent-foreground: #9a3412;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #fdba74;
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}
